@@ -3,6 +3,7 @@ package com.devs.trabalho.controller.gerenciador.eventos;
 import com.devs.trabalho.controller.gerenciador.GerenciadorBaseController;
 import com.devs.trabalho.controller.gerenciador.GerenciadorHomeController;
 import com.devs.trabalho.controller.popup.ConfirmacaoController;
+import com.devs.trabalho.exceptions.SistemaException;
 import com.devs.trabalho.model.eventos.Evento;
 import com.devs.trabalho.service.EventoService;
 import com.devs.trabalho.utils.GerenciadorTelas;
@@ -157,8 +158,12 @@ public class GerenciadorEventosController extends GerenciadorHomeController impl
     }
 
     private void atualizarTabela() {
-        eventos = this.eventoService.listarTodos();
-        this.tableGerenciador.setItems(FXCollections.observableArrayList(eventos));
+        try {
+            eventos = this.eventoService.listarTodos();
+            this.tableGerenciador.setItems(FXCollections.observableArrayList(eventos));
+        } catch(SistemaException e ) {
+            GerenciadorTelas.mostrarAlertaErro("Erro", "Não foi possível listar os clientes (Erro Banco de dados).");
+        }
     }
 
     private Evento getEventoSelecionado() {

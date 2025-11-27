@@ -121,7 +121,6 @@ public class InspecionarEstoqueController {
 
             } catch (Exception e) {
                 GerenciadorTelas.mostrarAlertaErro("Erro", "Falha ao remover produto.");
-                e.printStackTrace();
             }
         }
     }

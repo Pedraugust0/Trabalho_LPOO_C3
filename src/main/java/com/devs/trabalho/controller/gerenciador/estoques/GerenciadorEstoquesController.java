@@ -124,7 +124,6 @@ public class GerenciadorEstoquesController extends GerenciadorHomeController imp
 
         } catch (Exception e) {
             GerenciadorTelas.mostrarAlertaErro("Erro", "Não foi possível carregar os produtos do estoque.");
-            e.printStackTrace();
         }
     }
 

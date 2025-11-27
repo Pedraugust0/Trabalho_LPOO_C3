@@ -1,6 +1,7 @@
 package com.devs.trabalho.controller.gerenciador.eventos;
 
 import com.devs.trabalho.controller.gerenciador.FormularioBaseController;
+import com.devs.trabalho.exceptions.SistemaException;
 import com.devs.trabalho.model.cliente.Cliente;
 import com.devs.trabalho.model.eventos.Evento;
 import com.devs.trabalho.service.ClienteService;
@@ -47,11 +48,18 @@ public class EditarEventoController extends FormularioBaseController<Evento> imp
             comboCliente.setItems(FXCollections.observableArrayList(clienteService.listarTodos()));
             comboCliente.setConverter(new StringConverter<Cliente>() {
                 @Override
-                public String toString(Cliente cliente) { return cliente == null ? "" : cliente.getNome(); }
+                public String toString(Cliente cliente) {
+                    return cliente == null ? "" : cliente.getNome();
+                }
                 @Override
-                public Cliente fromString(String string) { return null; }
+                public Cliente fromString(String string) {
+                    return null;
+                }
             });
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch(SistemaException e) {
+            GerenciadorTelas.mostrarAlertaErro("Erro", "Não foi possível listar os clientes (Erro Banco de dados).");
+        }
+
     }
 
     public void setEventoEdicao(Evento evento) {

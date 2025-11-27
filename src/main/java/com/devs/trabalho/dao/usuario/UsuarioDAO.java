@@ -15,21 +15,6 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
         super(Usuario.class);
     }
 
-    public void saveUser(Usuario usuario) throws SQLException{
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-
-            session.save(usuario);
-
-            transaction.commit();
-
-        } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            throw e;
-        }
-    }
-
     public Usuario findByLogin(String login) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 

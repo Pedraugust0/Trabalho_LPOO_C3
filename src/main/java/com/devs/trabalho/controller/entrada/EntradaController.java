@@ -3,6 +3,7 @@ package com.devs.trabalho.controller.entrada;
 import com.devs.trabalho.exceptions.SistemaException;
 import com.devs.trabalho.exceptions.usuario.AutenticacaoException;
 import com.devs.trabalho.exceptions.usuario.UsuarioNotFoundException;
+import com.devs.trabalho.exceptions.usuario.UsuarioUniqueLoginException;
 import com.devs.trabalho.model.usuario.Usuario;
 import com.devs.trabalho.service.UsuarioService;
 import com.devs.trabalho.utils.GerenciadorSessao;
@@ -56,8 +57,11 @@ public class EntradaController {
             this.usuarioService.findByLogin(login);
             GerenciadorTelas.mostrarAlerta("Cadastro", "Conta criada com sucesso!");
 
+        } catch(UsuarioUniqueLoginException e) {
+            GerenciadorTelas.mostrarAlertaErro("Cadastro", e.getMessage());
+
         } catch (UsuarioNotFoundException e) {
-            GerenciadorTelas.mostrarAlerta("Cadastro", "Sua conta não foi criada");
+            GerenciadorTelas.mostrarAlertaErro("Cadastro", "Sua conta não foi criada");
 
             //ExceptionInInitalizer é lançado pelo HibernateUtil caso não consiga se instanciar
         } catch(SistemaException | ExceptionInInitializerError e) {

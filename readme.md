@@ -6,17 +6,18 @@
 
 ### Sumário:
 
-| Seção                                                           | Conteúdo                                                        |
-|-----------------------------------------------------------------|-----------------------------------------------------------------|
-| [Conceitos do Sistema](#conceitos-do-sistema)                   | Objetivo e Para quem foi feito                                  |
-| [Funcionalidades](#funcionalidades)                             | O que faz                                                       |
-| [Arquitetura](#arquitetura-do-projeto)                          | Como faz                                                        |
-| [Classes de Banco de Dados](#comunicação-com-o-banco-de-dados)  | Classes e Arquivos do Sistema                                   |
-| [Gerenciador de Sessão](#sessão-do-usuário)                     | Classes de Gerência de Sessão do Usuário **(muito importante)** |
-| [Classes de Regra de negócio](#regras-de-negócio)               | Classes Service                                                 |
-| [Classes Utilitárias](#classes-utilitárias)                     | Classes utilitárias **(muito importante)**                      |
-| [Classes Gerenciadoras](#classes-gerenciadoras)                 | Classes Controladoras dos Gerenciadores                         |
-| [Classes Possíveis de Pergunta](#classes-possíveis-de-pergunta) | Classes possíveis de pergunta **(Importante dms)**              |
+| Seção                                                          | Conteúdo                                                        |
+|----------------------------------------------------------------|-----------------------------------------------------------------|
+| [Conceitos do Sistema](#conceitos-do-sistema)                  | Objetivo e Para quem foi feito                                  |
+| [Funcionalidades](#funcionalidades)                            | O que faz                                                       |
+| [Como rodar?](#como-rodar)                                     | Como Rodar o projeto na sua máquina?                            |
+| [Arquitetura](#arquitetura-do-projeto)                         | Como faz                                                        |
+| [Classes de Banco de Dados](#comunicação-com-o-banco-de-dados) | Classes e Arquivos do Sistema                                   |
+| [Gerenciador de Sessão](#sessão-do-usuário)                    | Classes de Gerência de Sessão do Usuário **(muito importante)** |
+| [Classes de Regra de negócio](#regras-de-negócio)              | Classes Service                                                 |
+| [Classes Utilitárias](#classes-utilitárias)                    | Classes utilitárias **(muito importante)**                      |
+| [Classes Gerenciadoras](#classes-gerenciadoras)                | Classes Controladoras dos Gerenciadores                         |
+| [Conceitos de LPOO aplicados](#conceitos-de-lpoo-aplicados)    | Conceitos das aulas aplicados                                   |
 
 ---
 
@@ -67,6 +68,105 @@ Responsáveis por eventos que precisam de uma solução digital para controle de
 - Editar um Funcionário
 - Inspecionar um Funcionário
 - Filtrar Funcionários
+
+---
+
+## Como Rodar
+
+### Guia de Execução do Projeto
+
+Este guia contém o passo a passo para configurar o ambiente e executar o projeto JavaFX com Banco de Dados via Docker.
+
+### Pré-requisitos
+
+Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
+
+1.  **Java JDK** (Versão 21)
+2.  **Maven** (Para build e dependências)
+3.  **Docker & Docker Compose** (Para rodar o banco de dados)
+
+---
+
+### Instalação e Configuração do Docker
+
+O Docker Compose é responsável por subir o banco de dados automaticamente.
+
+### Para Linux (Debian/Ubuntu)
+No Linux, instalamos o motor e o plugin do compose.
+
+```bash
+# Atualize os pacotes e instale dependências
+
+# Instale o Docker
+sudo apt update
+sudo apt install docker.io docker-compose
+
+# Permita rodar docker sem 'sudo' (Opcional, mas recomendado)
+sudo usermod -aG docker $USER
+# (Depois disso, faça logoff e login novamente para aplicar)
+```
+
+### Verificando a instalação
+Abra seu terminal e rode:
+```bash
+docker compose version
+```
+*Se aparecer a versão (ex: v2.x.x), está tudo pronto.*
+
+---
+
+### Como Rodar o Projeto
+
+Siga a ordem abaixo. O banco de dados precisa estar rodando **antes** da aplicação tentar conectar.
+
+### Subir a Infraestrutura (Banco de Dados)
+Na raiz do projeto (onde está o arquivo `docker-compose.yml`), execute:
+
+```bash
+docker compose up -d
+```
+
+* **O que isso faz?** Lê o arquivo `docker-compose.yml`, baixa a imagem do banco (se não tiver), cria o container e o inicia em segundo plano (`-d` = detached).
+* **Atenção:** Na primeira vez, pode demorar alguns segundos para o banco estar pronto para receber conexões.
+
+### Executar a Aplicação
+Com o banco rodando, inicie a aplicação JavaFX via Maven:
+
+```bash
+mvn javafx:run
+```
+
+* **O que isso faz?** Compila o código Java, baixa as dependências e abre a janela do sistema.
+
+---
+
+## Como Parar e Limpar
+
+Quando terminar de programar ou testar, é uma boa prática desligar os containers para economizar memória do computador.
+
+Execute:
+```bash
+docker compose down
+```
+
+* **O que isso faz?** Para e remove os containers e a rede virtual criada pelo Docker. (Seus dados persistem se houver um volume configurado no compose).
+
+---
+
+## Resumo de Comandos Rápidos
+
+```bash
+# 1. Ligar Banco (Antes de abrir o app)
+docker compose up -d
+
+# 2. Rodar App
+mvn javafx:run
+
+# 3. Desligar Banco (Ao finalizar o trabalho)
+docker compose down
+```
+
+---
 
 ---
 
@@ -200,7 +300,7 @@ Responsáveis por eventos que precisam de uma solução digital para controle de
 
 ---
 
-### Classes Possíveis de Pergunta
+### Conceitos de LPOO aplicados
 
 #### Classes Abstratas
 
@@ -242,8 +342,24 @@ Responsáveis por eventos que precisam de uma solução digital para controle de
 - Todos os Controllers que são de CRUD/Formulário (Sem ser os de Gerência) herdam de FormularioBaseController
 
 #### Polimorfismo
->src/main/java/com/devs/trabalho/utils/Tela
-- O Genérics <T> é uma forma de polimorfismo, visto que o T especificado pode tomar várias formas.
+>src/main/java/com/devs/trabalho/controller/gerenciador/contatos/ControladorContatos
+- Interface que força a implementação de alguns métodos
+
+>src/main/java/com/devs/trabalho/controller/gerenciador/clientes/AdicionarClienteController
+- Força a implementação do método da interface ControladorContatos
+
+>src/main/java/com/devs/trabalho/controller/gerenciador/clientes/AdicionarFuncionarioController
+- Força a implementação do método da interface ControladorContatos
+
+---
+
+>src/main/java/com/devs/trabalho/controller/gerenciador/FormularioBaseController
+- Classe abstrata para Controllers que façam CRUD em entidades
+
+>src/main/java/com/devs/trabalho/controller/gerenciador/clientes/AdicionarProdutoController
+>src/main/java/com/devs/trabalho/controller/gerenciador/clientes/EditarProdutoController
+- Sobrescreve e cria a sua implementação do método salvar da calsse FormularioBaseController
+
 
 #### Tratamento de Exceção
 >src/main/java/com/devs/trabalho/gerenciador/...
@@ -259,5 +375,5 @@ Responsáveis por eventos que precisam de uma solução digital para controle de
 
 #### Interface Gráfica
 >src/main/resources/com/devs/trabalho/fxml/...
-- Todos os arquivos .fxml são interfaces gráficas.
+- Todos os arquivos .fxml são ‘interfaces’ gráficas.
 

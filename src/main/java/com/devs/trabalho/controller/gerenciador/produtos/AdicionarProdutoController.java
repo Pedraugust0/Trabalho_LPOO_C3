@@ -60,7 +60,6 @@ public class AdicionarProdutoController extends FormularioBaseController<Produto
             GerenciadorTelas.mostrarAlertaErro("Erro", "Quantidade ou Valor inválidos.");
         } catch (Exception e) {
             GerenciadorTelas.mostrarAlertaErro("Erro", "Falha ao salvar produto.");
-            e.printStackTrace();
         }
     }
 }

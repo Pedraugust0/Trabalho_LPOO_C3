@@ -6,6 +6,7 @@ import com.devs.trabalho.exceptions.usuario.AutenticacaoException;
 import com.devs.trabalho.exceptions.usuario.UsuarioNotFoundException;
 import com.devs.trabalho.exceptions.usuario.UsuarioUniqueLoginException;
 import com.devs.trabalho.model.usuario.Usuario;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -22,11 +23,13 @@ public class UsuarioService {
 
     public void cadastrar(Usuario usuario) throws UsuarioUniqueLoginException, SistemaException{
 
-        try {
-            usuarioDAO.saveUser(usuario);
+        /** Checa se o login já existe no sistema*/
+        if(this.usuarioDAO.findByLogin(usuario.getLogin()) != null) {
+            throw new UsuarioUniqueLoginException("Login já existe no sistema");
+        }
 
-        } catch(ConstraintViolationException e) {
-            throw new UsuarioUniqueLoginException("O login informado já existe no sistema");
+        try {
+            usuarioDAO.save(usuario);
 
         } catch (Exception e) {
             throw new SistemaException("Falha ao acessar o banco de dados", e);
@@ -39,7 +42,7 @@ public class UsuarioService {
 
         try {
             usuarioEncontrado = this.findByLogin(login);
-        } catch(HibernateException e) {
+        } catch(Exception e) {
             throw new SistemaException("Falha ao acessar o banco de dados", e);
         }
 
@@ -70,6 +73,8 @@ public class UsuarioService {
 
         } catch(NoResultException e) {
             throw new UsuarioNotFoundException("Usuário não encontrado pelo Login");
+        } catch (Exception e) {
+            throw new SistemaException("Falha ao acessar o banco de dados", e);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.devs.trabalho.controller.gerenciador.eventos;
 
 import com.devs.trabalho.controller.gerenciador.FormularioBaseController;
+import com.devs.trabalho.exceptions.SistemaException;
 import com.devs.trabalho.exceptions.usuario.UsuarioNotLoggedException;
 import com.devs.trabalho.model.cliente.Cliente;
 import com.devs.trabalho.model.eventos.Evento;
@@ -58,8 +59,8 @@ public class AdicionarEventoController extends FormularioBaseController<Evento> 
                     return null;
                 }
             });
-        } catch (Exception e) {
-            GerenciadorTelas.mostrarAlertaErro("Erro", "Não foi possível carregar os clientes.");
+        } catch (SistemaException e) {
+            GerenciadorTelas.mostrarAlertaErro("Erro", "Não foi possível carregar os clientes. (Erro no banco de dados)");
         }
     }
 

@@ -72,7 +72,6 @@ public class EditarProdutoController extends FormularioBaseController<Produto> {
             GerenciadorTelas.mostrarAlertaErro("Erro", "Quantidade ou Valor inválidos. Use apenas números.");
         } catch (Exception e) {
             GerenciadorTelas.mostrarAlertaErro("Erro", "Falha ao atualizar produto.");
-            e.printStackTrace();
         }
     }
 }
