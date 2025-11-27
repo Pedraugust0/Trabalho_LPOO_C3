@@ -139,7 +139,10 @@ public class GerenciadorEstoquesController extends GerenciadorHomeController imp
         List<Estoque> filtrados = estoques.stream()
                 .filter(e -> e.getNome().toLowerCase().contains(termo))
                 .collect(Collectors.toList());
-
+        /**
+         * .obervableArrayList é um método que transforma os itens
+         * em um objeto que possa ser colocado na tabela
+         * */
         this.tableGerenciador.setItems(FXCollections.observableArrayList(filtrados));
     }
 

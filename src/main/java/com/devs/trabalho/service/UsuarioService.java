@@ -10,6 +10,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.exception.ConstraintViolationException;
 
 import javax.persistence.NoResultException;
+import java.sql.SQLException;
 
 public class UsuarioService {
 
@@ -22,12 +23,12 @@ public class UsuarioService {
     public void cadastrar(Usuario usuario) throws UsuarioUniqueLoginException, SistemaException{
 
         try {
-            usuarioDAO.save(usuario);
+            usuarioDAO.saveUser(usuario);
 
         } catch(ConstraintViolationException e) {
             throw new UsuarioUniqueLoginException("O login informado já existe no sistema");
 
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             throw new SistemaException("Falha ao acessar o banco de dados", e);
         }
 

@@ -78,12 +78,7 @@ public class EntradaController {
 
             // Valida se só o login está vazio
             if (login.isBlank()) {
-                throw new IllegalArgumentException("Campo login está vazio");
-            }
-
-            // Valida espaços no login
-            if (login.contains(" ")) {
-                throw new IllegalArgumentException("O campo login não deve conter espaços");
+                throw new IllegalArgumentException("O campo login vazio");
             }
 
             // Valida se só a senha está vazia

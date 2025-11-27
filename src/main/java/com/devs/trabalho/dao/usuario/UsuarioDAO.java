@@ -4,11 +4,30 @@ import com.devs.trabalho.dao.BaseDAO;
 import com.devs.trabalho.dao.HibernateUtil;
 import com.devs.trabalho.model.usuario.Usuario;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
+
+import java.sql.SQLException;
 
 public class UsuarioDAO extends BaseDAO<Usuario> {
 
     public UsuarioDAO() {
         super(Usuario.class);
+    }
+
+    public void saveUser(Usuario usuario) throws SQLException{
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            session.save(usuario);
+
+            transaction.commit();
+
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            throw e;
+        }
     }
 
     public Usuario findByLogin(String login) {

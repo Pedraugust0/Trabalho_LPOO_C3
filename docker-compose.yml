@@ -5,7 +5,7 @@ services:
     image: postgres:16
     container_name: trabalho_lpoo_db
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:-1234}
+      POSTGRES_PASSWORD: 1234
 
       POSTGRES_DB: trabalho_lpoo
     
