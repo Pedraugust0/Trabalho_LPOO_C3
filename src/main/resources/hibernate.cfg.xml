@@ -1,0 +1,29 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/trabalho_lpoo</property>
+        
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">1234</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+        <property name="hbm2ddl.auto">update</property>
+
+        <mapping class="com.devs.trabalho.model.usuario.Usuario"/>
+        <mapping class="com.devs.trabalho.model.funcionario.Funcionario"/>
+        <mapping class="com.devs.trabalho.model.cliente.Cliente"/>
+        <mapping class="com.devs.trabalho.model.pessoa.Contato"/>
+        <mapping class="com.devs.trabalho.model.estoques.Estoque"/>
+        <mapping class="com.devs.trabalho.model.eventos.Evento"/>
+        <mapping class="com.devs.trabalho.model.produtos.Produto"/>
+
+    </session-factory>
+</hibernate-configuration>
